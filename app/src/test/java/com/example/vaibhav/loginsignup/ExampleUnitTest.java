@@ -1,4 +1,4 @@
-package com.example.noway.loginregister;
+package com.example.vaibhav.loginsignup;
 
 import org.junit.Test;
 

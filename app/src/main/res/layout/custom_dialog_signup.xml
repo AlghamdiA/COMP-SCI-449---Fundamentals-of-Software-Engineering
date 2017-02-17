@@ -1,0 +1,162 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#F44336">
+
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/lib-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/relativelayout1"
+        android:background="@drawable/dialog_round"
+        android:layout_alignParentTop="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:id="@+id/rname"
+            android:layout_above="@+id/rcompany"
+            android:layout_alignParentLeft="true" >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="First Name"
+            android:textSize="20sp"
+            android:id="@+id/firstname"
+            android:maxLines="1" android:singleLine="true"
+            android:textColorHint="#ffffffff"
+            android:textColor="#212121"
+            android:drawableLeft="@drawable/user"
+            />
+
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:id="@+id/lname"
+            android:layout_above="@+id/rcompany"
+            android:layout_alignParentRight="true"
+            >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Last Name"
+            android:textSize="20sp"
+            android:id="@+id/lastname"
+            android:maxLines="1" android:singleLine="true"
+            android:textColorHint="#ffffffff"
+            android:textColor="#212121"
+            android:drawableLeft="@drawable/user"
+            />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:id="@+id/rcompany"
+            android:layout_above="@+id/date"
+            android:layout_alignParentLeft="true" >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Level of Education"
+                android:textSize="20sp"
+                android:id="@+id/edu"
+                android:maxLines="1" android:singleLine="true"
+                android:textColorHint="#ffffffff"
+                android:textColor="#212121"
+                android:drawableLeft="@drawable/user"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ruserid"
+            android:layout_centerHorizontal="true"
+            android:background="#d4d4d4"
+            android:hint="Select D.O.B."
+            android:padding="15dp"
+            android:textColor="#897"
+            android:textColorHint="#090"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:id="@+id/ruserid"
+
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="email Id"
+                android:textSize="20sp"
+                android:id="@+id/userid"
+                android:maxLines="1" android:singleLine="true"
+                android:textColorHint="#ffffffff"
+                android:textColor="#212121"
+                android:drawableLeft="@drawable/user"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:id="@+id/rpassword"
+
+            android:layout_below="@+id/ruserid"
+            android:layout_marginBottom="8dp"
+            android:layout_alignStart="@+id/ruserid"
+            android:layout_alignLeft="@+id/ruserid">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="password"
+                android:textSize="20sp"
+                android:inputType="textPassword"
+                android:id="@+id/password"
+                android:maxLines="1" android:singleLine="true"
+                android:textColorHint="#ffffffff"
+                android:textColor="#212121"
+                android:drawableLeft="@drawable/password"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:id="@+id/signUp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:background="#448AFF"
+            android:layout_below="@+id/rpassword"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+
+
+
+
+    </RelativeLayout>
+</RelativeLayout>
