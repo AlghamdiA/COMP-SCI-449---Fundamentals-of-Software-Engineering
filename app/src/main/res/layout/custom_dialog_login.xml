@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/relativelayout1"
         android:layout_alignParentTop="true"
-        android:background="@drawable/dialog_round"
+        android:background="@drawable/group"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_alignParentStart="true"
@@ -29,8 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:hint="email Id"
-                android:textSize="30sp"
+                android:hint="email"
+                android:textSize="18sp"
                 android:id="@+id/userid"
                 android:maxLines="1" android:singleLine="true"
                 android:textColorHint="#000000"
@@ -50,19 +50,19 @@
             android:layout_alignStart="@+id/ruserid"
             android:layout_alignLeft="@+id/ruserid">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-            android:hint="password"
-            android:textSize="30sp"
-            android:inputType="textPassword"
-            android:id="@+id/password"
-            android:maxLines="1" android:singleLine="true"
-            android:textColorHint="#000000"
-            android:textColor="#212121"
-            android:drawableLeft="@drawable/password"
-             />
+                android:hint="password"
+                android:textSize="18sp"
+                android:inputType="textPassword"
+                android:id="@+id/password"
+                android:maxLines="1" android:singleLine="true"
+                android:textColorHint="#000000"
+                android:textColor="#212121"
+                android:drawableLeft="@drawable/password"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -71,7 +71,6 @@
             android:layout_height="wrap_content"
             android:text="Log in"
             android:id="@+id/login"
-            android:textStyle="bold"
             android:textColor="#ffffff"
             android:background="#448AFF"
             android:layout_below="@+id/rpassword"

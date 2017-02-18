@@ -49,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-                // Include dialog.xml file
                 dialog1.setContentView(R.layout.custom_dialog_login);
                 dialog1.setCanceledOnTouchOutside(false);
-                // set values for custom dialog components - text, image and
-                // button
+
                 dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
                 dialog1.show();
                 Button login = (Button) dialog1.findViewById(R.id.login);
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if(present==0)
-                        Toast.makeText(MainActivity.this, "Please Enter Correct Parameters!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "username or password is not correct", Toast.LENGTH_SHORT).show();
 
 
 
@@ -111,9 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog1.setCanceledOnTouchOutside(false);
                 dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-                // Include dialog.xml file
                 dialog1.setContentView(R.layout.custom_dialog_signup);
-                // set values for custom dialog components - text, image and
                 // button
                 dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
                 dialog1.show();
@@ -133,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onDateSet(DatePicker view, int year,
                                                           int monthOfYear, int dayOfMonth) {
-                                        // set day of month , month and year value in the edit text
                                         date.setText(dayOfMonth + "/"
                                                 + (monthOfYear + 1) + "/" + year);
 
@@ -198,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         else{
-                            Toast.makeText(MainActivity.this,"Please Enter Correct Parameters!!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,"All information are required",Toast.LENGTH_SHORT).show();
 
 
                         }
@@ -217,19 +212,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
