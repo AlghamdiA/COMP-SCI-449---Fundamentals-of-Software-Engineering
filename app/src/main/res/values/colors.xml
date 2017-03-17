@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#52417e</color>
+    <color name="colorPrimaryDark">#433565</color>
+    <color name="colorAccent">#e64d63</color>
+    <color name="colorPrimaryMedium">#4a3a73</color>
+    <color name="tab_text_inactive">#aca3c0</color>
+    <color name="bg_login">#6c54ab</color>
+    <color name="img_border">#5c4697</color>
+    <color name="msg_no_chats">#878787</color>
+    <color name="border_dashed">#dedede</color>
+    <color name="line_seperator">#dedede</color>
+    <color name="timestamp">#888888</color>
+    <color name="bg_circle_default">#dedede</color>
 </resources>
