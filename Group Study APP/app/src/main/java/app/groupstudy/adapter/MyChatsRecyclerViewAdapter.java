@@ -113,6 +113,8 @@ public class MyChatsRecyclerViewAdapter extends RecyclerView.Adapter<MyChatsRecy
         String timestamp = "";
 
         today = today.length() < 2 ? "0" + today : today;
+     
+        // this exception for sprint 4
 
         try {
             Date date = new Date(dateStr);
