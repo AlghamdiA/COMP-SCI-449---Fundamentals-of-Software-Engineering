@@ -17,24 +17,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import app.groupstudy.R;
-import app.groupstudy.database.Chat;
+import app.groupstudy.database.ChatGroup;
 import app.groupstudy.helper.CircleTransform;
 
 
 public class MyChatsRecyclerViewAdapter extends RecyclerView.Adapter<MyChatsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Chat> mValues;
+    private final List<ChatGroup> mValues;
     private static String today;
     private Context mContext;
-    private Map<String, Boolean> myGroups;
 
-    public MyChatsRecyclerViewAdapter(List<Chat> items, Map<String, Boolean> myGroups, Context mContext) {
+    public MyChatsRecyclerViewAdapter(List<ChatGroup> items, Context mContext) {
         mValues = items;
         this.mContext = mContext;
-        this.myGroups = myGroups;
         Calendar calendar = Calendar.getInstance();
         today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
     }
@@ -48,9 +45,9 @@ public class MyChatsRecyclerViewAdapter extends RecyclerView.Adapter<MyChatsRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Chat chat = mValues.get(position);
-        holder.subject.setText(chat.getSubject());
-        holder.timestamp.setText(getTimeStamp(chat.getTimestamp()));
+        ChatGroup chatGroup = mValues.get(position);
+        holder.subject.setText(chatGroup.getSubject());
+        holder.timestamp.setText(getTimeStamp(chatGroup.getTimestamp()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,8 +55,8 @@ public class MyChatsRecyclerViewAdapter extends RecyclerView.Adapter<MyChatsRecy
             }
         });
 
-        if (!TextUtils.isEmpty(chat.getPhotoUrl())) {
-            Glide.with(mContext).load(chat.getPhotoUrl())
+        if (!TextUtils.isEmpty(chatGroup.getPhotoUrl())) {
+            Glide.with(mContext).load(chatGroup.getPhotoUrl())
                     .thumbnail(0.5f)
                     .crossFade()
                     .transform(new CircleTransform(mContext))
@@ -69,6 +66,8 @@ public class MyChatsRecyclerViewAdapter extends RecyclerView.Adapter<MyChatsRecy
         } else {
             holder.imgProfile.setVisibility(View.GONE);
         }
+
+        holder.description.setText(chatGroup.getLastMessage());
     }
 
     @Override
@@ -94,14 +93,12 @@ public class MyChatsRecyclerViewAdapter extends RecyclerView.Adapter<MyChatsRecy
 
     public static String getTimeStamp(long dateStr) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String timestamp = "";
-
+        String timestamp;
         today = today.length() < 2 ? "0" + today : today;
 
-        //Date date = format.parse(dateStr);
         SimpleDateFormat todayFormat = new SimpleDateFormat("dd");
         String dateToday = todayFormat.format(new Date(dateStr));
-        format = dateToday.equals(today) ? new SimpleDateFormat("hh:mm a") : new SimpleDateFormat("hh:mm a");
+        format = dateToday.equals(today) ? new SimpleDateFormat("hh:mm a") : new SimpleDateFormat("MMM d, yy hh:mm a");
         String date1 = format.format(new Date(dateStr));
         timestamp = date1.toString();
 
@@ -113,8 +110,6 @@ public class MyChatsRecyclerViewAdapter extends RecyclerView.Adapter<MyChatsRecy
         String timestamp = "";
 
         today = today.length() < 2 ? "0" + today : today;
-     
-        // this exception for sprint 4
 
         try {
             Date date = new Date(dateStr);

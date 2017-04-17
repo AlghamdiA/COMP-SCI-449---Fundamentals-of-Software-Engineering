@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import app.groupstudy.R;
+import app.groupstudy.app.MyApplication;
 import app.groupstudy.database.MyFirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
@@ -34,7 +35,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
     private SignInButton mSignInButton;
-    private GoogleApiClient mGoogleApiClient;
+    //private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
     private ProgressBar progressBar;
     private MyFirebaseDatabase myDb;
@@ -56,14 +57,14 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         // Set click listeners
         mSignInButton.setOnClickListener(this);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+                .build();*/
 
         myDb = new MyFirebaseDatabase(this);
 
@@ -125,8 +126,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     private void signIn() {
         progressBar.setVisibility(View.VISIBLE);
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        if (MyApplication.getGoogleApiHelper().isConnected()) {
+            //Get google api client
+            GoogleApiClient client = MyApplication.getGoogleApiHelper().getGoogleApiClient();
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(client);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
     }
 
     @Override
@@ -180,7 +185,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onGroupCreated() {
-        
+
     }
 
     @Override

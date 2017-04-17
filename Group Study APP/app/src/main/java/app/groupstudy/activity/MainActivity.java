@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -25,16 +26,22 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import app.groupstudy.R;
+import app.groupstudy.app.MyApplication;
 import app.groupstudy.fragment.HomeFragment;
 import app.groupstudy.fragment.NewChatFragment;
 import app.groupstudy.fragment.SettingsFragment;
 import app.groupstudy.helper.CircleTransform;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private String TAG = MainActivity.class.getSimpleName();
     public static final String NAVIGATE_VIEW = "navView";
@@ -262,10 +269,6 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_NEW_CHAT;
                         break;
-                    case R.id.nav_settings:
-                        navItemIndex = 2;
-                        CURRENT_TAG = TAG_SETTINGS;
-                        break;
                     default:
                         navItemIndex = 0;
                 }
@@ -355,6 +358,15 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            // Google sign out
+            if (MyApplication.getGoogleApiHelper().isConnected()) {
+                Auth.GoogleSignInApi.signOut(MyApplication.getGoogleApiHelper().getGoogleApiClient()).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                            }
+                        });
+            }
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(MainActivity.this, SignInActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -364,5 +376,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

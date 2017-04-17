@@ -3,8 +3,10 @@ package app.groupstudy.database;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+
 @IgnoreExtraProperties
-public class Chat {
+public class ChatGroup implements Serializable {
     private String id;
     private String subject;
     private String lastMessage;
@@ -12,8 +14,9 @@ public class Chat {
     private int memberCount;
     private String photoUrl;
     private boolean isPublic;
+    private String adminId;
 
-    public Chat() {
+    public ChatGroup() {
     }
 
     public String getId() {
@@ -70,5 +73,13 @@ public class Chat {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 }

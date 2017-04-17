@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/chat_msg_margin_bottom"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <ImageView
+        android:id="@+id/msg_profile_image"
+        android:layout_width="@dimen/ic_chat_user"
+        android:layout_height="@dimen/ic_chat_user"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_account_circle_black_24dp"
+        android:tint="@color/timestamp" />
+
+    <RelativeLayout
+        android:id="@+id/bubble_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/chat_bubble_left_margin"
+        android:layout_toRightOf="@id/msg_profile_image"
+        android:background="@drawable/bg_chat_message_bubble"
+        android:padding="@dimen/padding_10">
+
+        <TextView
+            android:id="@+id/msg_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_5"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/msg_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/msg_author"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/msg_author"
+            android:paddingLeft="@dimen/padding_10"
+            android:text="6:00 AM"
+            android:textColor="@color/color_timestamp"
+            android:textSize="@dimen/timestamp" />
+
+        <TextView
+            android:id="@+id/msg_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/msg_author"
+            android:text="Hello how r u doing"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/chat_message"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/msg_chat_text" />
+
+        <ImageView
+            android:id="@+id/msg_img_attachment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/msg_author"
+            android:adjustViewBounds="true"
+            android:background="@color/colorPrimary"
+            android:scaleType="fitCenter" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@id/bubble_container"
+        android:layout_marginLeft="-15dp"
+        android:src="@drawable/ic_play_arrow_white_24dp" />
+
+
+</RelativeLayout>

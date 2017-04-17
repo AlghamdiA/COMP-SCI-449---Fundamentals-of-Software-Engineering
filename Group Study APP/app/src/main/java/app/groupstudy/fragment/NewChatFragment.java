@@ -32,8 +32,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +51,7 @@ import java.util.Map;
 import app.groupstudy.R;
 import app.groupstudy.activity.MainActivity;
 import app.groupstudy.adapter.ParticipantsAdapter;
-import app.groupstudy.database.Chat;
+import app.groupstudy.database.ChatGroup;
 import app.groupstudy.database.MyFirebaseDatabase;
 import app.groupstudy.database.User;
 import app.groupstudy.helper.RecyclerTouchListener;
@@ -73,6 +76,9 @@ public class NewChatFragment extends Fragment implements MyFirebaseDatabase.MyFi
     private static final int REQUEST_PERMISSIONS = 2;
     private String picturePath;
     private MyFirebaseDatabase myFirebaseDatabase;
+    FirebaseUser firebaseUser;
+    FirebaseAuth mFirebaseAuth;
+    private TextView txtMsgNoParticipants;
 
     public NewChatFragment() {
         // Required empty public constructor
@@ -94,6 +100,8 @@ public class NewChatFragment extends Fragment implements MyFirebaseDatabase.MyFi
         mFirebaseDatabase = mFirebaseInstance.getReference("users");
         if (getArguments() != null) {
         }
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -109,6 +117,8 @@ public class NewChatFragment extends Fragment implements MyFirebaseDatabase.MyFi
         switchVisibility = (SwitchCompat) view.findViewById(R.id.switch_visibility);
         layoutChooseImage = (LinearLayout) view.findViewById(R.id.layout_choose_image);
         imgPreview = (ImageView) view.findViewById(R.id.img_preview);
+        txtMsgNoParticipants = (TextView) view.findViewById(R.id.txt_no_participants);
+        txtMsgNoParticipants.setVisibility(View.GONE);
         fetchParticipants();
 
         progressBarButton.setVisibility(View.GONE);
@@ -140,7 +150,8 @@ public class NewChatFragment extends Fragment implements MyFirebaseDatabase.MyFi
         groupName.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
@@ -243,13 +254,19 @@ public class NewChatFragment extends Fragment implements MyFirebaseDatabase.MyFi
     }
 
     private void getAllUsers(DataSnapshot dataSnapshot) {
+        firebaseUser = mFirebaseAuth.getCurrentUser();
+        if (firebaseUser == null)
+            return;
         if (dataSnapshot.getChildrenCount() > 0)
             participants.clear();
 
         for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
             User user = singleSnapshot.getValue(User.class);
             user.setuId(singleSnapshot.getKey());
-            participants.add(user);
+
+            // skip current user
+            if (!firebaseUser.getUid().equals(user.getuId()))
+                participants.add(user);
             adapter.notifyDataSetChanged();
         }
 
@@ -272,18 +289,19 @@ public class NewChatFragment extends Fragment implements MyFirebaseDatabase.MyFi
         disableButton();
         progressBarButton.setVisibility(View.VISIBLE);
 
-        Chat chat = new Chat();
-        chat.setSubject(groupName);
-        chat.setMemberCount(adapter.getSelectedIndexes().size());
-        chat.setTimestamp(System.currentTimeMillis() / 1000L);
-        chat.setPublic(switchVisibility.isChecked());
+        ChatGroup chatGroup = new ChatGroup();
+        chatGroup.setSubject(groupName);
+        chatGroup.setMemberCount(adapter.getSelectedIndexes().size() + 1);
+        chatGroup.setTimestamp(System.currentTimeMillis());
+        chatGroup.setPublic(switchVisibility.isChecked());
         Map<String, Boolean> members = new HashMap<>();
         for (int pos : adapter.getSelectedIndexes()) {
             members.put(participants.get(pos).getuId(), true);
         }
 
         // save the group
-        myFirebaseDatabase.insertGroup(chat, members, picturePath);
+        Log.e(TAG, "insertGroup");
+        myFirebaseDatabase.insertGroup(chatGroup, members, picturePath);
     }
 
     private void fetchParticipants() {
@@ -309,20 +327,21 @@ public class NewChatFragment extends Fragment implements MyFirebaseDatabase.MyFi
         }));
     }
 
-    private void toggleButtonState(){
-        if(groupName.getText().toString().trim().length() > 0 && adapter.getSelectedIndexes().size() > 0){
+    private void toggleButtonState() {
+        if (groupName.getText().toString().trim().length() > 0 && adapter.getSelectedIndexes().size() > 0) {
             enableButton();
-        }else{
+        } else {
             disableButton();
         }
     }
 
     private void refreshList() {
         Log.e(TAG, "refreshList");
+        progressBar.setVisibility(View.GONE);
         if (participants.size() > 0) {
-            progressBar.setVisibility(View.GONE);
+            txtMsgNoParticipants.setVisibility(View.GONE);
         } else {
-            progressBar.setVisibility(View.VISIBLE);
+            txtMsgNoParticipants.setVisibility(View.VISIBLE);
         }
         adapter.notifyDataSetChanged();
     }

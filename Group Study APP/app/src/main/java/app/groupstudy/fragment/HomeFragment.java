@@ -53,8 +53,8 @@ public class HomeFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(MyChatsFragment.newInstance(true), getString(R.string.tab_my_chats));
-        adapter.addFragment(MyChatsFragment.newInstance(false), getString(R.string.tab_all_chats));
+        adapter.addFragment(MyChatsFragment.newInstance(), getString(R.string.tab_my_chats));
+        adapter.addFragment(AllChatsFragment.newInstance(), getString(R.string.tab_all_chats));
         viewPager.setAdapter(adapter);
     }
 

@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -33,25 +34,21 @@ import app.groupstudy.adapter.MyChatsRecyclerViewAdapter;
 import app.groupstudy.database.ChatGroup;
 import app.groupstudy.helper.RecyclerTouchListener;
 
-public class MyChatsFragment extends Fragment {
-    private String TAG = MyChatsFragment.class.getSimpleName();
-    private static final String ARG_LOAD_PRIVATE = "load-private";
+public class AllChatsFragment extends Fragment {
+    private String TAG = AllChatsFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private DatabaseReference mFirebaseDatabaseAllGroups;
-    private DatabaseReference mFirebaseDatabaseUserChats;
     private FirebaseDatabase mFirebaseInstance;
     private ValueEventListener mAllChatsListener;
-    private ValueEventListener mUserChatListener;
     private MyChatsRecyclerViewAdapter adapter;
     private TextView msgEmpty;
-    private Map<String, Boolean> myGroups;
     private List<ChatGroup> chatGroups;
 
-    public MyChatsFragment() {
+    public AllChatsFragment() {
     }
 
-    public static MyChatsFragment newInstance() {
-        MyChatsFragment fragment = new MyChatsFragment();
+    public static AllChatsFragment newInstance() {
+        AllChatsFragment fragment = new AllChatsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -60,15 +57,10 @@ public class MyChatsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseDatabaseAllGroups = mFirebaseInstance.getReference("chats");
-        mFirebaseDatabaseUserChats = mFirebaseInstance.getReference("users")
-                .child(uid).child("chats");
         chatGroups = new ArrayList<>();
-        myGroups = new HashMap<>();
         adapter = new MyChatsRecyclerViewAdapter(chatGroups, getActivity());
-
         mAllChatsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -80,46 +72,18 @@ public class MyChatsFragment extends Fragment {
 
             }
         };
-
-        mUserChatListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                getUserChatGroups(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    private void getUserChatGroups(DataSnapshot dataSnapshot) {
-        Map<String, Boolean> groups = (Map<String, Boolean>) dataSnapshot.getValue();
-        if (groups != null) {
-            myGroups.clear();
-            for (Map.Entry<String, Boolean> entry : groups.entrySet()) {
-                Log.e(TAG, "My Group: " + entry.getKey());
-                myGroups.put(entry.getKey(), entry.getValue());
-            }
-        } else {
-            myGroups.clear();
-        }
-
-        filterChatGroups();
-        displayList();
     }
 
     private void getAllChatGroups(DataSnapshot dataSnapshot) {
         chatGroups.clear();
         for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
             ChatGroup chatGroup = singleSnapshot.getValue(ChatGroup.class);
-            String key = singleSnapshot.getKey();
-            chatGroup.setId(key);
-            chatGroups.add(chatGroup);
+            if (chatGroup.isPublic()) {
+                String key = singleSnapshot.getKey();
+                chatGroup.setId(key);
+                chatGroups.add(chatGroup);
+            }
         }
-
-        filterChatGroups();
         displayList();
     }
 
@@ -127,14 +91,6 @@ public class MyChatsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         mFirebaseDatabaseAllGroups.addValueEventListener(mAllChatsListener);
-        mFirebaseDatabaseUserChats.addValueEventListener(mUserChatListener);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mFirebaseDatabaseAllGroups.addValueEventListener(mAllChatsListener);
-        mFirebaseDatabaseUserChats.addValueEventListener(mUserChatListener);
     }
 
     @Override
@@ -142,10 +98,6 @@ public class MyChatsFragment extends Fragment {
         super.onStop();
         if (mAllChatsListener != null) {
             mFirebaseDatabaseAllGroups.removeEventListener(mAllChatsListener);
-        }
-
-        if (mUserChatListener != null) {
-            mFirebaseDatabaseUserChats.removeEventListener(mUserChatListener);
         }
     }
 
@@ -165,12 +117,9 @@ public class MyChatsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                try {
-                    Intent intent = new Intent(getActivity(), ChatMessagesActivity.class);
-                    intent.putExtra("group", chatGroups.get(position));
-                    startActivity(intent);
-                } catch (Exception e) {
-                }
+                Intent intent = new Intent(getActivity(), ChatMessagesActivity.class);
+                intent.putExtra("group", chatGroups.get(position));
+                startActivity(intent);
             }
 
             @Override
@@ -193,18 +142,6 @@ public class MyChatsFragment extends Fragment {
 
         adapter.notifyDataSetChanged();
     }
-
-
-    private void filterChatGroups() {
-        Log.e(TAG, "filterChatGroups mine:" + myGroups.size() + ", all: " + chatGroups.size());
-        for (Iterator<ChatGroup> iterator = chatGroups.iterator(); iterator.hasNext(); ) {
-            ChatGroup chatGroup = iterator.next();
-            if (!myGroups.containsKey(chatGroup.getId())) {
-                iterator.remove();
-            }
-        }
-    }
-
 
     @Override
     public void onAttach(Context context) {

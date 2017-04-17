@@ -28,11 +28,20 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_in_app_title">Group Study</string>
     <string name="btn_google_sign_in">Sign in with Google</string>
-    <string name="msg_no_chat_groups">No chat groups found!</string>
+    <string name="msg_no_chat_groups">No chatGroup groups found!</string>
     <string name="txt_group_subject">Group Subject</string>
     <string name="txt_add_participants">Add Group Participants</string>
     <string name="btn_new_chat_group">Create Chat Group</string>
     <string name="error_empty_group_name">Enter group name</string>
     <string name="error_empty_participants">Select the participants</string>
     <string name="txt_group_visibility">Public</string>
+    <string name="msg_group_not_found">Chat group not found!</string>
+    <string name="hint_type_message">Type a  new message</string>
+    <string name="action_leave_group">Leave group</string>
+    <string name="action_edit_group">Edit group icon</string>
+    <string name="action_delete_group">Delete group</string>
+    <string name="msg_joined_group">You have joined</string>
+    <string name="msg_left_group">You have left</string>
+    <string name="msg_delete_group">You have deleted</string>
+    <string name="no_users_to_add">No participants found!</string>
 </resources>

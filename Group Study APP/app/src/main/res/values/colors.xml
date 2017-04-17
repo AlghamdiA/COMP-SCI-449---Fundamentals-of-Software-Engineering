@@ -12,4 +12,7 @@
     <color name="line_seperator">#dedede</color>
     <color name="timestamp">#888888</color>
     <color name="bg_circle_default">#dedede</color>
+    <color name="bg_chat_discussion">#f0f0f0</color>
+    <color name="color_timestamp">#a8a8a8</color>
+    <color name="chat_message">#353535</color>
 </resources>
